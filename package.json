@@ -18,6 +18,7 @@
     "astro": "^5.0.0"
   },
   "devDependencies": {
+    "@astrojs/compiler": "^3.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@vitest/coverage-v8": "^4.1.2",
