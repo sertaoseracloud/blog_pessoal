@@ -4,37 +4,66 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-describe('Component: GitHubLinks.astro', () => {
-  it('defines Repo interface with required fields', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/GitHubLinks.astro'), 'utf-8');
-    expect(content).toContain('name:');
-    expect(content).toContain('description:');
-    expect(content).toContain('url:');
-    expect(content).toContain('language:');
+async function readComponent() {
+  return readFile(join(__dirname, '../../../src/components/GitHubLinks.astro'), 'utf-8');
+}
+
+describe('Given the GitHubLinks component source', () => {
+  describe('When I check its interface definitions', () => {
+    it('Then I should find a Repo interface with required fields', async () => {
+      const content = await readComponent();
+      expect(content).toContain('interface Repo');
+      expect(content).toContain('name: string');
+      expect(content).toContain('description: string');
+      expect(content).toContain('url: string');
+      expect(content).toContain('language: string');
+    });
   });
 
-  it('loads repos from JSON data file', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/GitHubLinks.astro'), 'utf-8');
-    expect(content).toContain('loadData');
-    expect(content).toContain('repos.json');
+  describe('When I check how repos are loaded', () => {
+    it('Then I should use loadData utility', async () => {
+      const content = await readComponent();
+      expect(content).toContain('loadData');
+      expect(content).toContain('repos.json');
+    });
+
+    it('Then I should use validateRepo validator', async () => {
+      const content = await readComponent();
+      expect(content).toContain('validateRepo');
+    });
+
+    it('Then I should await loadData with validation', async () => {
+      const content = await readComponent();
+      expect(content).toContain('const repos: Repo[] = await loadData(');
+    });
   });
 
-  it('maps repos to repo cards', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/GitHubLinks.astro'), 'utf-8');
-    expect(content).toContain('repos.map(');
-    expect(content).toContain('repo.name');
-    expect(content).toContain('repo.description');
-    expect(content).toContain('repo.language');
+  describe('When I check how repos are rendered', () => {
+    it('Then I should map each repo to a card', async () => {
+      const content = await readComponent();
+      expect(content).toContain('repos.map(');
+      expect(content).toContain('repo.name');
+      expect(content).toContain('repo.description');
+      expect(content).toContain('repo.language');
+    });
+
+    it('Then I should render external links with security attributes', async () => {
+      const content = await readComponent();
+      expect(content).toContain('target="_blank"');
+      expect(content).toContain('rel="noopener"');
+    });
   });
 
-  it('renders external links with security attributes', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/GitHubLinks.astro'), 'utf-8');
-    expect(content).toContain('target="_blank"');
-    expect(content).toContain('rel="noopener"');
-  });
+  describe('When I check the styling', () => {
+    it('Then I should find repos-grid layout with CSS Grid', async () => {
+      const content = await readComponent();
+      expect(content).toContain('.repos-grid');
+      expect(content).toContain('display: grid');
+    });
 
-  it('has repos-grid layout', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/GitHubLinks.astro'), 'utf-8');
-    expect(content).toContain('.repos-grid');
+    it('Then I should find repo-card styles', async () => {
+      const content = await readComponent();
+      expect(content).toContain('.repo-card');
+    });
   });
 });

@@ -4,43 +4,76 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-describe('Component: ProjectTimeline.astro', () => {
-  it('defines Project interface with required fields', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/ProjectTimeline.astro'), 'utf-8');
-    expect(content).toContain('title:');
-    expect(content).toContain('period:');
-    expect(content).toContain('description:');
-    expect(content).toContain('tags:');
+async function readComponent() {
+  return readFile(join(__dirname, '../../../src/components/ProjectTimeline.astro'), 'utf-8');
+}
+
+describe('Given the ProjectTimeline component source', () => {
+  describe('When I check its interface definitions', () => {
+    it('Then I should find a Project interface with required fields', async () => {
+      const content = await readComponent();
+      expect(content).toContain('interface Project');
+      expect(content).toContain('title: string');
+      expect(content).toContain('period: string');
+      expect(content).toContain('description: string');
+      expect(content).toContain('tags: string[]');
+    });
+
+    it('Then I should find a Props interface with projects array', async () => {
+      const content = await readComponent();
+      expect(content).toContain('interface Props');
+      expect(content).toContain('projects: Project[]');
+    });
   });
 
-  it('renders projects as timeline items', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/ProjectTimeline.astro'), 'utf-8');
-    expect(content).toContain('projects.map(');
-    expect(content).toContain('.timeline-item');
+  describe('When I check destructuring of props', () => {
+    it('Then I should destructure projects from Astro.props', async () => {
+      const content = await readComponent();
+      expect(content).toContain('const { projects } = Astro.props');
+    });
   });
 
-  it('displays period, title, description, and tags', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/ProjectTimeline.astro'), 'utf-8');
-    expect(content).toContain('{project.period}');
-    expect(content).toContain('{project.title}');
-    expect(content).toContain('{project.description}');
-    expect(content).toContain('project.tags.map');
+  describe('When I check how projects are rendered', () => {
+    it('Then I should map each project to a timeline item', async () => {
+      const content = await readComponent();
+      expect(content).toContain('projects.map(');
+      expect(content).toContain('.timeline-item');
+    });
+
+    it('Then I should render period, title, description', async () => {
+      const content = await readComponent();
+      expect(content).toContain('{project.period}');
+      expect(content).toContain('{project.title}');
+      expect(content).toContain('{project.description}');
+    });
+
+    it('Then I should render tags as a mapped list', async () => {
+      const content = await readComponent();
+      expect(content).toContain('project.tags.map');
+      expect(content).toContain('<span class="tag">{tag}</span>');
+    });
   });
 
-  it('has timeline marker elements', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/ProjectTimeline.astro'), 'utf-8');
-    expect(content).toContain('timeline');
-    expect(content).toContain('timeline-marker');
-    expect(content).toContain('timeline-content');
-    expect(content).toContain('timeline-item');
-    expect(content).toContain('timeline-period');
-    expect(content).toContain('timeline-title');
-    expect(content).toContain('timeline-desc');
-    expect(content).toContain('timeline-tags');
-  });
+  describe('When I check the timeline structure', () => {
+    it('Then I should find timeline container with marker and content', async () => {
+      const content = await readComponent();
+      expect(content).toContain('.timeline');
+      expect(content).toContain('.timeline-marker');
+      expect(content).toContain('.timeline-content');
+      expect(content).toContain('.timeline-item');
+    });
 
-  it('has vertical line connector', async () => {
-    const content = await readFile(join(__dirname, '../../../src/components/ProjectTimeline.astro'), 'utf-8');
-    expect(content).toContain('.timeline::before');
+    it('Then I should find all timeline sub-elements', async () => {
+      const content = await readComponent();
+      expect(content).toContain('.timeline-period');
+      expect(content).toContain('.timeline-title');
+      expect(content).toContain('.timeline-desc');
+      expect(content).toContain('.timeline-tags');
+    });
+
+    it('Then I should have a vertical connector line', async () => {
+      const content = await readComponent();
+      expect(content).toContain('.timeline::before');
+    });
   });
 });
