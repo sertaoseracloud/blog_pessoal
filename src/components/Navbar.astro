@@ -1,4 +1,6 @@
 ---
+import { joinBase } from '../constants';
+
 interface Props {
   currentPage?: string;
 }
@@ -6,16 +8,16 @@ interface Props {
 const { currentPage = 'home' } = Astro.props;
 
 const navLinks = [
-  { href: '/', label: 'Sobre', page: 'home' },
-  { href: '/portfolio', label: 'Portfólio', page: 'portfolio' },
-  { href: '/talks', label: 'Palestras', page: 'talks' },
-  { href: '/blog', label: 'Blog', page: 'blog' },
+  { href: joinBase(), label: 'Sobre', page: 'home' },
+  { href: joinBase('portfolio'), label: 'Portfólio', page: 'portfolio' },
+  { href: joinBase('talks'), label: 'Palestras', page: 'talks' },
+  { href: joinBase('blog'), label: 'Blog', page: 'blog' },
 ];
 ---
 
 <nav class="navbar">
   <div class="container nav-content">
-    <a href="/" class="nav-logo">Cláudio Raposo</a>
+    <a href={joinBase()} class="nav-logo">Cláudio Raposo</a>
     <ul class="nav-links">
       {navLinks.map((link) => (
         <li>
