@@ -1,0 +1,15 @@
+{
+  "name": "blog-pessoal",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Portfólio pessoal e blog de Cláudio Filipe Lima Raposo",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "astro check"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  }
+}
