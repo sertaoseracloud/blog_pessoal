@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Cláudio Raposo — Systems Architect & Professor" currentPage="home">
+  <main>
+    <section class="container section hero">
+      <div class="hero-content">
+        <h1 class="hero-name">Cláudio Filipe Lima Raposo</h1>
+        <p class="hero-title">Systems Architect &amp; Project Leader @ NTT DATA</p>
+        <p class="hero-subtitle">Professor | Microsoft MVP | Docker Captain</p>
+        <div class="hero-links">
+          <a href="https://github.com/claudioraposo" target="_blank" rel="noopener" class="btn btn-primary">GitHub</a>
+          <a href="https://linkedin.com/in/claudioraposo" target="_blank" rel="noopener" class="btn btn-secondary">LinkedIn</a>
+          <a href="https://scholar.google.com" target="_blank" rel="noopener" class="btn btn-secondary">Google Scholar</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2 class="section-title">Sobre Mim</h2>
+      <div class="about-content">
+        <p>Profissional brasileiro de destaque nas áreas de <strong>tecnologia da informação</strong>, <strong>arquitetura de software</strong> e <strong>computação em nuvem</strong>. Reconhecido por sua expertise em arquiteturas distribuídas, DevOps, cloud computing e desenvolvimento de software.</p>
+        <p>Atua como <strong>Systems Architect &amp; Project Leader</strong> na NTT DATA, liderando o design de arquiteturas distribuídas e multicloud. É também <strong>professor de graduação</strong> na FIAP e em outras instituições, ministrando disciplinas como Programação Web, Algoritmos, Estruturas de Dados e Cloud Computing.</p>
+        <p>Possui <strong>71 citações totais</strong> no Google Scholar, com índice h de 4. Acumula prêmios internacionais como <strong>Microsoft MVP</strong>, <strong>Docker Captain</strong> e <strong>Green Software Champion</strong>.</p>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2 class="section-title">Áreas de Especialização</h2>
+      <div class="expertise-grid">
+        <div class="expertise-card">
+          <h3>Arquitetura de Software</h3>
+          <p>Microserviços, Cell-Based Architecture, DDD, SOLID</p>
+        </div>
+        <div class="expertise-card">
+          <h3>Cloud Computing</h3>
+          <p>Azure, AWS, GCP, automação e governança multicloud</p>
+        </div>
+        <div class="expertise-card">
+          <h3>DevOps &amp; Containers</h3>
+          <p>Kubernetes (AKS/EKS), Docker, Terraform, CI/CD</p>
+        </div>
+        <div class="expertise-card">
+          <h3>Segurança &amp; LGPD</h3>
+          <p>Conformidade, proteção de dados, segurança em cloud</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    border-radius: var(--radius);
+    padding: 4rem 2rem;
+  }
+  .hero-name {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-title {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+  .hero-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .about-content {
+    font-size: 1.1rem;
+    max-width: 800px;
+  }
+  .about-content p { margin-bottom: 1rem; }
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .expertise-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .expertise-card h3 { color: var(--accent); margin-bottom: 0.5rem; }
+  .expertise-card p { color: var(--text-secondary); }
+  @media (max-width: 768px) {
+    .hero-name { font-size: 2rem; }
+    .hero { min-height: auto; padding: 2rem 0; }
+  }
+</style>
