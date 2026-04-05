@@ -1,4 +1,7 @@
 ---
+import { loadData } from '../utils/data';
+import { validateRepo } from '../utils/validation';
+
 interface Repo {
   name: string;
   description: string;
@@ -6,13 +9,7 @@ interface Repo {
   language: string;
 }
 
-const repos: Repo[] = [
-  { name: 'nestjs-viacep', description: 'Módulo NestJS para consulta de endereços via ViaCep', url: 'https://github.com/sertaoseracloud/nestjs-viacep', language: 'TypeScript' },
-  { name: 'nestjs-dataprotection', description: 'Proteção de dados sensíveis em objetos, alinhado à LGPD', url: 'https://github.com/sertaoseracloud/nestjs-dataprotection', language: 'TypeScript' },
-  { name: 'nestjs-chatgpt', description: 'Serviço de geração de texto com OpenAI API', url: 'https://github.com/sertaoseracloud/nestjs-chatgpt', language: 'TypeScript' },
-  { name: 'linkshare', description: 'Loja virtual TypeScript com e-commerce', url: 'https://github.com/sertaoseracloud/linkshare', language: 'TypeScript' },
-  { name: 'gRPC', description: 'Microserviços comunicando-se via gRPC', url: 'https://github.com/sertaoseracloud/grpc', language: 'Go' },
-];
+const repos: Repo[] = await loadData('repos.json', validateRepo);
 ---
 
 <div class="repos-grid">

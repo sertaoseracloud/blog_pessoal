@@ -1,0 +1,10 @@
+[
+  { "name": "Microsoft MVP", "issuer": "Microsoft", "year": "2024-2025" },
+  { "name": "Microsoft Certified Trainer (MCT)", "issuer": "Microsoft" },
+  { "name": "Docker Captain", "issuer": "Docker" },
+  { "name": "Green Software Champion", "issuer": "Green Software Foundation" },
+  { "name": "AZ-400: DevOps Engineer Expert", "issuer": "Microsoft" },
+  { "name": "AZ-204: Azure Developer Associate", "issuer": "Microsoft" },
+  { "name": "AWS Certified Solutions Architect", "issuer": "Amazon Web Services" },
+  { "name": "Lean Six Sigma Green Belt", "issuer": "Voith", "year": "2020" }
+]

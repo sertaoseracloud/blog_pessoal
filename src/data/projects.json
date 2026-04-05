@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Arquitetura Celular Multicloud — NTT DATA",
+    "period": "Jan 2025 – Atual",
+    "description": "Design de arquiteturas distribuídas com AKS e EKS, proxies sidecar em Golang integrados ao Cosmos DB e MongoDB. Ganho de 30% em tempo de resposta.",
+    "tags": ["AKS", "EKS", "Golang", "Terraform", "CI/CD"]
+  },
+  {
+    "title": "Automação de Pipelines CI/CD — CI&T",
+    "period": "Set 2023 – Jan 2025",
+    "description": "Padrões e práticas para automação em nuvem, orquestração de entregas e suporte em DevOps.",
+    "tags": ["Azure", "Azure DevOps", "Pipelines", "DevOps"]
+  },
+  {
+    "title": "nestjs-viacep — Open Source",
+    "period": "2024",
+    "description": "Módulo NestJS para consulta de endereços via ViaCep em TypeScript.",
+    "tags": ["TypeScript", "NestJS", "Open Source"]
+  },
+  {
+    "title": "nestjs-dataprotection — Open Source",
+    "period": "2024",
+    "description": "Módulo para proteção de dados sensíveis, alinhado à LGPD.",
+    "tags": ["TypeScript", "NestJS", "LGPD", "Open Source"]
+  },
+  {
+    "title": "gRPC Microservices — Open Source",
+    "period": "2024",
+    "description": "Microserviços comunicando-se via gRPC — arquitetura distribuída.",
+    "tags": ["gRPC", "Microservices", "Open Source"]
+  }
+]

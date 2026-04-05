@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  period?: string;
+  tags?: string[];
+  link?: string;
+  linkLabel?: string;
+  class?: string;
+}
+
+const { title, description, period, tags = [], link, linkLabel = 'Saiba mais', class: className } = Astro.props;
+---
+
+<div class={`card ${className || ''}`}>
+  {period && <span class="card-period">{period}</span>}
+  <h3 class="card-title">{title}</h3>
+  {description && <p class="card-description">{description}</p>}
+  {tags.length > 0 && (
+    <div class="card-tags">
+      {tags.map(tag => <span class="tag">{tag}</span>)}
+    </div>
+  )}
+  {link && (
+    <a href={link} class="card-link" target="_blank" rel="noopener">
+      {linkLabel}
+    </a>
+  )}
+</div>
+
+<style>
+  .card-period {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+    display: block;
+  }
+  .card-title {
+    font-size: var(--text-h4);
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+  }
+  .card-description {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    line-height: var(--line-height-body);
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+  }
+  .card-link {
+    display: inline-block;
+    color: var(--neon-primary);
+    font-weight: 600;
+    transition: var(--transition);
+  }
+  .card-link:hover {
+    color: var(--neon-hover);
+    text-decoration: underline;
+  }
+</style>
