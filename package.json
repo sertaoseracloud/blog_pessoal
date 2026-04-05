@@ -10,15 +10,16 @@
     "lint": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "cypress run",
-    "test:e2e:ci": "start-server-and-test dev http://localhost:4321/blog_pessoal/ 'cypress run'",
-    "cypress:open": "cypress open"
+    "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test",
+    "test:e2e:dev": "playwright test --ui"
   },
   "dependencies": {
     "astro": "^5.0.0"
   },
   "devDependencies": {
     "@astrojs/compiler": "^3.0.1",
+    "@playwright/test": "^1.59.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@vitest/coverage-v8": "^4.1.2",

@@ -13,7 +13,21 @@
       "Bash(sed:*)",
       "Bash(gh --version)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "Bash(node:*)",
+      "Bash(kill 1629)",
+      "Bash(curl -sI https://mentoria.sertaoseracloud.com/blog_pessoal/)",
+      "Bash(curl -sI https://mentoria.sertaoseracloud.com/)",
+      "Bash(curl -s https://mentoria.sertaoseracloud.com/)",
+      "Bash(git fetch:*)",
+      "Bash(npx playwright:*)",
+      "Bash(echo \"Preview PID: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/blog_pessoal/)",
+      "Bash(kill 1761)",
+      "Bash(echo \"New PID: $!\")",
+      "Bash(npm list:*)"
     ]
   }
 }

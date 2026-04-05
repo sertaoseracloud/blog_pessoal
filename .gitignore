@@ -1,5 +1,8 @@
 node_modules/
 dist/
 .astro/
-playwright-validation.js
-validate-site.js
+playwright-report/
+test-results/
+playwright/.ms-playwright/
+*.pid
+validate-prod.mjs
