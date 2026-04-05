@@ -31,9 +31,34 @@ jobs:
           name: vitest-coverage
           path: coverage
 
-  test-e2e:
+  test-integration:
     runs-on: ubuntu-latest
     needs: test-unit
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-integration-coverage
+          path: coverage
+
+  test-e2e:
+    runs-on: ubuntu-latest
+    needs: test-integration
     steps:
       - name: Checkout
         uses: actions/checkout@v4
