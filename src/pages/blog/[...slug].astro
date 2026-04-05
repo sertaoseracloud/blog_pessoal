@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { joinBase } from '../../constants';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -19,7 +20,7 @@ const { title, date, description, tags } = post.data;
   <main class="container section">
     <article>
       <header class="post-header">
-        <a href="/blog" class="back-link">&larr; Voltar ao Blog</a>
+        <a href={joinBase('blog')} class="back-link">&larr; Voltar ao Blog</a>
         <h1>{title}</h1>
         <time class="post-date">{date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
         {description && <p class="post-description">{description}</p>}

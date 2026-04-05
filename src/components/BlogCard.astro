@@ -1,4 +1,6 @@
 ---
+import { joinBase } from '../constants';
+
 interface Post {
   title: string;
   date: Date;
@@ -16,7 +18,7 @@ const { posts } = Astro.props;
 
 <div class="blog-grid">
   {posts.map((post) => (
-    <a href={`/blog/${post.slug}`} class="blog-card card">
+    <a href={joinBase('blog', post.slug)} class="blog-card card">
       <h3>{post.title}</h3>
       <time class="blog-date">{post.date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
       {post.description && <p class="blog-desc">{post.description}</p>}
