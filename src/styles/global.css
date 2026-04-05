@@ -1,3 +1,5 @@
+@import './tokens.css';
+
 :root {
   --bg-primary: #0d1117;
   --bg-secondary: #161b22;
@@ -30,21 +32,21 @@ body {
 a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
 a:hover { color: var(--accent-hover); }
 
-.container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
-.section { padding: 4rem 0; }
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 var(--space-xl); }
+.section { padding: var(--space-3xl) 0; }
 
 .section-title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: var(--text-h2);
+  margin-bottom: var(--space-xl);
   border-bottom: 2px solid var(--accent);
-  padding-bottom: 0.5rem;
+  padding-bottom: var(--space-sm);
 }
 
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem;
+  padding: var(--card-padding);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
@@ -56,15 +58,15 @@ a:hover { color: var(--accent-hover); }
   display: inline-block;
   background: var(--bg-tertiary);
   color: var(--accent);
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  margin-right: 0.4rem;
+  padding: var(--tag-padding-y) var(--tag-padding-x);
+  border-radius: var(--radius-sm);
+  font-size: var(--tag-font-size);
+  margin-right: var(--tag-margin-right);
 }
 
 .btn {
   display: inline-block;
-  padding: 0.7rem 1.5rem;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
   border-radius: var(--radius);
   font-weight: 600;
   transition: all 0.2s;
@@ -77,12 +79,12 @@ a:hover { color: var(--accent-hover); }
 code {
   font-family: var(--font-mono);
   background: var(--code-bg);
-  padding: 0.15rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.9em;
+  padding: var(--code-padding-y) var(--code-padding-x);
+  border-radius: var(--radius-sm);
+  font-size: var(--code-font-size);
 }
 
 @media (max-width: 768px) {
-  .container { padding: 0 1rem; }
-  .section { padding: 2rem 0; }
+  .container { padding: 0 var(--space-md); }
+  .section { padding: var(--space-xl) 0; }
 }
