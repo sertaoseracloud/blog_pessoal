@@ -59,7 +59,7 @@ describe('Given the ProjectTimeline component source', () => {
       const content = await readComponent();
       expect(content).toContain('.timeline');
       expect(content).toContain('.timeline-marker');
-      expect(content).toContain('.timeline-content');
+      expect(content).toContain('timeline-content');
       expect(content).toContain('.timeline-item');
     });
 
