@@ -1,0 +1,36 @@
+---
+interface Talk {
+  title: string;
+  event: string;
+  year?: string;
+  description?: string;
+}
+
+interface Props {
+  talks: Talk[];
+}
+
+const { talks } = Astro.props;
+---
+
+<div class="talks-grid">
+  {talks.map((talk) => (
+    <div class="talk-card card">
+      <h3>{talk.title}</h3>
+      <p class="talk-event">{talk.event}</p>
+      {talk.year && <span class="tag">{talk.year}</span>}
+      {talk.description && <p class="talk-desc">{talk.description}</p>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .talks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .talk-card h3 { margin-bottom: 0.5rem; }
+  .talk-event { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .talk-desc { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; }
+</style>

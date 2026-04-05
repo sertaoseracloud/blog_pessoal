@@ -1,0 +1,59 @@
+---
+interface Post {
+  title: string;
+  date: Date;
+  description?: string;
+  tags?: string[];
+  slug: string;
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="blog-grid">
+  {posts.map((post) => (
+    <a href={`/blog/${post.slug}`} class="blog-card card">
+      <h3>{post.title}</h3>
+      <time class="blog-date">{post.date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+      {post.description && <p class="blog-desc">{post.description}</p>}
+      {post.tags && (
+        <div class="blog-tags">
+          {post.tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )}
+    </a>
+  ))}
+</div>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .blog-card {
+    display: block;
+    color: var(--text-primary);
+  }
+  .blog-card h3 {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .blog-date {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .blog-desc {
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+  }
+  .blog-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+</style>

@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+const { title, date, description, tags } = post.data;
+---
+
+<BaseLayout title={`${title} — Blog`} currentPage="blog">
+  <main class="container section">
+    <article>
+      <header class="post-header">
+        <a href="/blog" class="back-link">&larr; Voltar ao Blog</a>
+        <h1>{title}</h1>
+        <time class="post-date">{date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+        {description && <p class="post-description">{description}</p>}
+        {tags && (
+          <div class="post-tags">
+            {tags.map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
+      <div class="post-content">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+  }
+  .post-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+  .post-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .post-date {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  .post-description {
+    color: var(--text-secondary);
+    margin: 0.5rem 0 1rem;
+    font-size: 1.1rem;
+  }
+  .post-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .post-content {
+    max-width: 780px;
+    line-height: 1.8;
+  }
+  .post-content :global(h2) {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    color: var(--accent);
+  }
+  .post-content :global(h3) {
+    font-size: 1.2rem;
+    margin: 1.5rem 0 0.8rem;
+  }
+  .post-content :global(p) {
+    margin-bottom: 1rem;
+  }
+  .post-content :global(ul), .post-content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  .post-content :global(li) {
+    margin-bottom: 0.3rem;
+  }
+  .post-content :global(blockquote) {
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    color: var(--text-secondary);
+    margin: 1rem 0;
+  }
+  .post-content :global(code) {
+    background: var(--code-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+  }
+  .post-content :global(pre) {
+    background: var(--code-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  .post-content :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+</style>

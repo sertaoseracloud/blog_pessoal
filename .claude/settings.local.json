@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash(whereis node:*)",
+      "Bash(where node:*)",
+      "Bash(winget install:*)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(sed:*)"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TalkCard from '../components/TalkCard.astro';
+import GitHubLinks from '../components/GitHubLinks.astro';
+
+const talks = [
+  { title: 'Plataformização de Arquitetura de Dados com Backstage.io e IAC', event: 'TDC Floripa', year: '2025' },
+  { title: 'Eficiência na Nuvem com Developer Experience', event: 'Azure Floripa', year: '2024' },
+  { title: 'Arquitetura Celular em Cloud Computing', event: 'RecDev Summit', year: '2024' },
+  { title: "Estratégias de Automação e DevOps em Multicloud", event: "The Developer's Conference (TDC)", year: '2023' },
+  { title: 'LGPD e Conformidade em Cloud Computing', event: 'Conferência Acadêmica', year: '2023' },
+];
+---
+
+<BaseLayout title="Palestras — Cláudio Raposo" currentPage="talks">
+  <main>
+    <section class="container section">
+      <h2 class="section-title">Palestras &amp; Workshops</h2>
+      <TalkCard talks={talks} />
+    </section>
+
+    <section class="container section">
+      <h2 class="section-title">Comunidade &amp; Liderança</h2>
+      <div class="community-list">
+        <div class="card community-item">
+          <h3>Microsoft MVP Community Lead</h3>
+          <p>Eventos, meetups e treinamentos sobre Microsoft, cloud e desenvolvimento.</p>
+        </div>
+        <div class="card community-item">
+          <h3>Docker Captain</h3>
+          <p>Referência global em containers, DevOps e automação.</p>
+        </div>
+        <div class="card community-item">
+          <h3>The Developer's Conference (TDC)</h3>
+          <p>Coordenador de trilhas de JavaScript, NodeJS e Arquitetura de Dados.</p>
+        </div>
+        <div class="card community-item">
+          <h3>Escola da Nuvem</h3>
+          <p>Mentor voluntário em cloud computing, promovendo inclusão e diversidade.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2 class="section-title">Projetos Open Source</h2>
+      <GitHubLinks />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .community-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .community-item h3 { color: var(--accent); margin-bottom: 0.5rem; }
+  .community-item p { color: var(--text-secondary); }
+</style>
