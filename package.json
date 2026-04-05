@@ -10,6 +10,7 @@
     "lint": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:integration": "vitest run tests/integration",
     "test:e2e": "playwright test",
     "test:e2e:ci": "playwright test",
     "test:e2e:dev": "playwright test --ui"
