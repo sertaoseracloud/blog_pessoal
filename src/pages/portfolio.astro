@@ -3,10 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectTimeline from '../components/ProjectTimeline.astro';
 import CertificationCard from '../components/CertificationCard.astro';
 import { loadData } from '../utils/data';
+import { validateProject, validateCertification } from '../utils/validation';
 
-const projects = await loadData('projects.json');
-const certifications = await loadData('certifications.json');
-const publications = await loadData('publications.json');
+const projects = await loadData('projects.json', validateProject);
+const certifications = await loadData('certifications.json', validateCertification);
+const publications = await loadData('publications.json', validateCertification);
 ---
 
 <BaseLayout title="Portfólio — Cláudio Raposo" currentPage="portfolio">
