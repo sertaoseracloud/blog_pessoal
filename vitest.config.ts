@@ -6,6 +6,7 @@ export default defineConfig({
     environment: 'jsdom',
     root: '.',
     setupFiles: ['./tests/setup.ts'],
+    include: ['tests/**/*.test.{ts,js}'], // only unit and integration tests
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
