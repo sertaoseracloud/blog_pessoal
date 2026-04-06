@@ -56,10 +56,10 @@ describe('Given the BadgeCard component source', () => {
       expect(content).toContain('class="badge-issuer"');
     });
 
-    it('Then I should conditionally render expiresDate as a tag', async () => {
+    it('Then I should NOT render the expiresDate as a tag (hidden from UI)', async () => {
       const content = await readComponent();
-      expect(content).toContain('badge.expiresDate &&');
-      expect(content).toContain('class="tag badge-expiry"');
+      expect(content).not.toContain('badge.expiresDate &&');
+      expect(content).not.toContain('class="tag badge-expiry"');
     });
   });
 

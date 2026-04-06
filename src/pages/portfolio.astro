@@ -6,7 +6,25 @@ import { loadData } from '../utils/data';
 import { validateProject, validateCertification } from '../utils/validation';
 
 const projects = await loadData('projects.json', validateProject);
-const badges = await loadData('credly/badges.json');
+const rawBadges = await loadData('credly/badges.json');
+
+// Group badges by issuer (provider)
+interface BadgeGroup {
+  [issuer: string]: Array<{
+    name: string;
+    issuer: string;
+    imageUrl: string;
+    credentialUrl: string;
+    expiresDate?: string;
+  }>;
+}
+const badgesByIssuer: BadgeGroup = rawBadges.reduce((acc, badge) => {
+  const issuer = badge.issuer;
+  if (!acc[issuer]) acc[issuer] = [];
+  acc[issuer].push(badge);
+  return acc;
+}, {} as BadgeGroup);
+
 const publications = await loadData('publications.json', validateCertification);
 ---
 
@@ -19,9 +37,14 @@ const publications = await loadData('publications.json', validateCertification);
 
     <section class="container section">
       <h2 class="section-title">Certificações</h2>
-      <div class="cert-grid">
-        {badges.map(badge => <BadgeCard badge={badge} />)}
-      </div>
+      {Object.entries(badgesByIssuer).map(([issuer, issuerBadges]) => (
+        <div class="issuer-group">
+          <h3 class="issuer-title">{issuer}</h3>
+          <div class="cert-grid">
+            {issuerBadges.map(badge => <BadgeCard badge={badge} />)}
+          </div>
+        </div>
+      ))}
     </section>
 
     <section class="container section">
@@ -78,4 +101,16 @@ const publications = await loadData('publications.json', validateCertification);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
+  }
+
+  .issuer-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .issuer-title {
+    font-size: var(--text-h3);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
   }

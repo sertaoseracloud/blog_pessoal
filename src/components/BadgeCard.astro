@@ -5,7 +5,7 @@ interface Props {
     issuer: string;
     imageUrl: string;
     credentialUrl: string;
-    expiresDate?: string;
+    expiresDate?: string; // kept in data but not displayed
   };
 }
 
@@ -17,7 +17,7 @@ const { badge } = Astro.props;
   <div class="badge-info">
     <h3 class="badge-name">{badge.name}</h3>
     <p class="badge-issuer">{badge.issuer}</p>
-    {badge.expiresDate && <span class="tag badge-expiry">{badge.expiresDate}</span>}
+    {/* Expiration date hidden */}
   </div>
 </a>
 
@@ -43,8 +43,5 @@ const { badge } = Astro.props;
     color: var(--text-secondary);
     font-size: 0.85rem;
     margin-bottom: 0;
-  }
-  .badge-expiry {
-    margin-top: 0.4rem;
   }
 </style>

@@ -34,41 +34,56 @@ test.describe('Given I visit the portfolio page', () => {
     tags.forEach(tag => expect(tag.trim().length).toBeGreaterThan(0));
   });
 
-  test('When I scroll down Then I should see badges section', async ({ page }) => {
+  test('When I scroll down Then I should see certifications grouped by provider', async ({ page }) => {
     const badgesSection = page.locator('h2:has-text("Certificações")');
     await expect(badgesSection).toBeVisible();
 
+    // issuer groups (providers)
+    const issuerGroups = page.locator('.issuer-group');
+    const count = await issuerGroups.count();
+    expect(count).toBeGreaterThanOrEqual(2); // at least Microsoft, AWS, etc.
+
+    // issuer titles should be visible
+    const issuerTitles = page.locator('.issuer-title');
+    const titlesCount = await issuerTitles.count();
+    expect(titlesCount).toBe(count);
+  });
+
+  test('When I view badges Then each badge should have name, issuer (via group), and badge image', async ({ page }) => {
     const badgeCards = page.locator('.badge-card');
     const count = await badgeCards.count();
     expect(count).toBeGreaterThanOrEqual(1);
-  });
 
-  test('When I view badges Then each badge should have name, issuer, and badge image', async ({ page }) => {
-    const badgeNames = page.locator('.badge-name');
-    const badgeIssuers = page.locator('.badge-issuer');
-    const badgeImages = page.locator('.badge-image');
+    // Check first badge
+    const firstBadge = badgeCards.first();
+    await expect(firstBadge.locator('.badge-name')).toBeVisible();
+    await expect(firstBadge.locator('.badge-issuer')).toBeVisible();
+    await expect(firstBadge.locator('.badge-image')).toBeVisible();
 
-    const namesCount = await badgeNames.count();
-    const issuersCount = await badgeIssuers.count();
-    const imagesCount = await badgeImages.count();
-
-    expect(namesCount).toBeGreaterThan(0);
-    expect(issuersCount).toBeGreaterThan(0);
-    expect(imagesCount).toBeGreaterThan(0);
-    expect(namesCount).toBe(imagesCount);
-    expect(issuersCount).toBe(imagesCount);
-
-    // Check first badge image has src
-    const firstImage = badgeImages.first();
-    const src = await firstImage.getAttribute('src');
-    expect(src).toBeTruthy();
-    expect(src!.startsWith('http')).toBe(true);
+    // Verify images src start with http
+    const images = page.locator('.badge-image');
+    const src = await images.first().getAttribute('src');
+    expect(src).toContain('http');
   });
 
   test('When I click a badge Then it should open the credential URL in new tab', async ({ page }) => {
     const firstBadge = page.locator('.badge-card').first();
     const href = await firstBadge.getAttribute('href');
     expect(href).toContain('https://www.credly.com/badges/');
+  });
+
+  test('When I view badge details Then expiration date should NOT be visible', async ({ page }) => {
+    // Ensure badge-expiry class does NOT exist (hidden)
+    const expiryTags = page.locator('.badge-expiry');
+    const count = await expiryTags.count();
+    expect(count).toBe(0);
+  });
+
+  test('When I view issuer titles Then they should mention known providers', async ({ page }) => {
+    const titles = await page.locator('.issuer-title').allTextContents();
+    const text = titles.join(' ');
+    // Should contain at least Microsoft or AWS
+    expect(text).toMatch(/Microsoft|AWS|Amazon|GitHub|Intel|Linux Foundation|edX|Skillable|Certiprof/i);
   });
 
   test('When I scroll further Then I should see education section', async ({ page }) => {

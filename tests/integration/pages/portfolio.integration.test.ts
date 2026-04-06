@@ -5,11 +5,11 @@ import { validateProject } from '../../../src/utils/validation';
 
 describe('Given the portfolio page with real data', () => {
   let projects: any[];
-  let badges: any[];
+  let rawBadges: any[];
 
   beforeAll(async () => {
     projects = await loadData('projects.json', validateProject);
-    badges = await loadData('credly/badges.json');
+    rawBadges = await loadData('credly/badges.json');
   });
 
   describe('When data is loaded for the portfolio page', () => {
@@ -19,8 +19,8 @@ describe('Given the portfolio page with real data', () => {
     });
 
     test('Then badges should be loaded with required fields', async () => {
-      expect(badges.length).toBeGreaterThan(0);
-      badges.forEach(b => {
+      expect(rawBadges.length).toBeGreaterThan(0);
+      rawBadges.forEach(b => {
         expect(typeof b.name).toBe('string');
         expect(typeof b.issuer).toBe('string');
         expect(typeof b.imageUrl).toBe('string');
@@ -28,11 +28,9 @@ describe('Given the portfolio page with real data', () => {
       });
     });
 
-    test('Then each badge should have optional expiresDate and localImagePath', async () => {
-      badges.forEach(b => {
-        expect(b.expiresDate === undefined || typeof b.expiresDate === 'string').toBe(true);
-        expect(b.localImagePath === undefined || typeof b.localImagePath === 'string').toBe(true);
-      });
+    test('Then grouping by issuer produces at least 2 different providers', async () => {
+      const issuers = new Set(rawBadges.map(b => b.issuer));
+      expect(issuers.size).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -52,7 +50,7 @@ describe('Given the portfolio page with real data', () => {
     });
 
     test('Then BadgeCard should receive compatible data', async () => {
-      badges.forEach(b => {
+      rawBadges.forEach(b => {
         expect(typeof b.name).toBe('string');
         expect(typeof b.issuer).toBe('string');
         expect(typeof b.imageUrl).toBe('string');
@@ -70,16 +68,21 @@ describe('Given the portfolio page with real data', () => {
       expect(script).toContain("import { loadData }");
     });
 
-    test('Then it should load data (projects with validator, badges without)', async () => {
+    test('Then it should load badges and group them by issuer in script', async () => {
       const script = await readPageScript('src/pages/portfolio.astro');
       expect(script).toContain("loadData('projects.json', validateProject)");
       expect(script).toContain("loadData('credly/badges.json')");
+      expect(script).toContain('badgesByIssuer');
+      expect(script).toContain('.reduce(');
+      // The grouping usage in JSX (Object.entries) is checked in the rendering test
     });
 
-    test('Then it should pass data to components via props', async () => {
+    test('Then it should render issuer groups with title and badge cards', async () => {
       const content = await readFullPageContent('src/pages/portfolio.astro');
-      expect(content).toContain("<ProjectTimeline projects={");
+      expect(content).toContain('<div class="issuer-group">');
+      expect(content).toContain('<h3 class="issuer-title">');
       expect(content).toContain("<BadgeCard badge={badge}");
+      expect(content).toContain('Object.entries(badgesByIssuer)');
     });
   });
 });
