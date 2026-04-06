@@ -27,7 +27,20 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/blog_pessoal/)",
       "Bash(kill 1761)",
       "Bash(echo \"New PID: $!\")",
-      "Bash(npm list:*)"
+      "Bash(npm list:*)",
+      "Bash(npm test:*)",
+      "Bash(npx vitest:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(git merge:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(tsx scripts/fetch-credly-badges.ts)",
+      "Read(//tmp/**)",
+      "Bash(NODE_OPTIONS=\"--loader ts-node/esm\" node scripts/fetch-credly-badges.ts)",
+      "Bash('[data-testid=\\\\\"desktop-badge-card\\\\\"]')",
+      "Bash(card)"
     ]
   }
 }
