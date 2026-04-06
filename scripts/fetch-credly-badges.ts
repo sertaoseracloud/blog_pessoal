@@ -1,32 +1,33 @@
-import { chromium, Browser, Page } from '@playwright/test';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as cheerio from 'cheerio';
 
-const CREDLY_URL = 'https://www.credly.com/users/claudio-filipe-lima-raposo/badges';
+const RAW_HTML_FILE = path.join(process.cwd(), 'scripts', 'raw.html');
 const OUTPUT_DIR = path.join(process.cwd(), 'src', 'data', 'credly');
 const IMAGES_DIR = path.join(OUTPUT_DIR, 'images');
+const JSON_FILE = path.join(OUTPUT_DIR, 'badges.json');
 
 interface CredlyBadge {
   id: string;
   name: string;
   issuer: string;
-  issuedDate: string;
+  issuedDate?: string;
+  expiresDate: string;
   imageUrl: string;
-  description?: string;
+  localImagePath: string;
+  credentialUrl: string;
 }
 
 async function ensureDir(dir: string) {
   try {
     await fs.mkdir(dir, { recursive: true });
-  } catch (e) {
-    // ignore if exists
-  }
+  } catch (e) {}
 }
 
 async function downloadImage(url: string, destPath: string) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Failed to download ${url}: ${response.statusText}`);
-  const buffer = await response.buffer();
+  const buffer = Buffer.from(await response.arrayBuffer());
   await fs.writeFile(destPath, buffer);
 }
 
@@ -34,88 +35,93 @@ export async function fetchCredlyBadges(): Promise<CredlyBadge[]> {
   await ensureDir(OUTPUT_DIR);
   await ensureDir(IMAGES_DIR);
 
-  const browser: Browser = await chromium.launch({ headless: true });
-  const page: Page = await browser.newPage();
+  // Read HTML from local file
+  console.log('📖 Reading HTML from raw.html...');
+  const html = await fs.readFile(RAW_HTML_FILE, 'utf-8');
 
-  try {
-    // Navigate to Credly (public page)
-    await page.goto(CREDLY_URL, { waitUntil: 'networkidle' });
-
-    // Wait for badges to load
-    await page.waitForSelector('[data-testid="badge-card"]', { timeout: 30000 });
-
-    // Scroll to load all badges (lazy load)
-    let previousHeight = 0;
-    while (true) {
-      await page.evaluate(() => window.scrollBy(0, window.innerHeight));
-      await page.waitForTimeout(2000);
-      const newHeight = await page.evaluate(() => document.body.scrollHeight);
-      if (newHeight === previousHeight) break;
-      previousHeight = newHeight;
-    }
-
-    // Extract badge data
-    const badges: CredlyBadge[] = await page.$$eval('[data-testid="badge-card"]', (cards) => {
-      return cards.map(card => {
-        const nameEl = card.querySelector('h3') || card.querySelector('[data-testid="badge-name"]');
-        const issuerEl = card.querySelector('[data-testid="badge-issuer"]') || card.querySelector('.issuer-name');
-        const dateEl = card.querySelector('[data-testid="badge-issued-date"]');
-        const imgEl = card.querySelector('img[data-testid="badge-image"]') || card.querySelector('img');
-        const descEl = card.querySelector('[data-testid="badge-description"]');
-
-        const id = card.getAttribute('data-badge-id') || Math.random().toString(36).substr(2, 9);
-
-        return {
-          id,
-          name: nameEl?.textContent?.trim() || '',
-          issuer: issuerEl?.textContent?.trim() || '',
-          issuedDate: dateEl?.textContent?.replace('Issued', '').trim() || '',
-          imageUrl: imgEl?.getAttribute('src') || '',
-          description: descEl?.textContent?.trim() || '',
-        };
-      }).filter(b => b.name && b.imageUrl);
-    });
-
-    console.log(`Found ${badges.length} badges`);
-
-    // Download images and save metadata
-    const result: CredlyBadge[] = [];
-    for (const badge of badges) {
-      try {
-        const ext = path.extname(badge.imageUrl.split('?')[0]) || '.png';
-        const imageFilename = `${badge.id}${ext}`;
-        const imagePath = path.join(IMAGES_DIR, imageFilename);
-
-        await downloadImage(badge.imageUrl, imagePath);
-        console.log(`Downloaded: ${badge.name} → ${imageFilename}`);
-
-        result.push({
-          ...badge,
-          imageUrl: `/src/data/credly/images/${imageFilename}`, // relative path for use in Astro
-        });
-      } catch (err) {
-        console.error(`Failed to download ${badge.name}:`, err);
-      }
-    }
-
-    // Save JSON metadata
-    const jsonPath = path.join(OUTPUT_DIR, 'badges.json');
-    await fs.writeFile(jsonPath, JSON.stringify(result, null, 2));
-    console.log(`Saved metadata to ${jsonPath}`);
-
-    return result;
-  } finally {
-    await browser.close();
+  if (html.trim().length === 0) {
+    throw new Error('raw.html is empty. Please paste the Credly profile HTML first.');
   }
+
+  console.log('📦 Parsing HTML...');
+  const $ = cheerio.load(html);
+
+  const badges: CredlyBadge[] = [];
+
+  $('[data-testid="desktop-badge-card"]').each((_, card) => {
+    const $card = $(card);
+    const badgeId = $card.attr('href')?.split('/').pop() || Math.random().toString(36).slice(2, 11);
+
+    const nameEl = $card.find('span[data-testid="Typography"][class*="EarnedBadgeCardstyles__BadgeNameText"]');
+    const issuerEl = $card.find('span[data-testid="Typography"][class*="EarnedBadgeCardstyles__IssuerText"]');
+    const dateEl = $card.find('span[data-testid="Typography"][class*="EarnedBadgeCardstyles__ExpirationDateText"]');
+    const imgEl = $card.find('img[src]');
+    const credentialUrl = $card.attr('href') || '';
+
+    let expiresDate = '';
+    if (dateEl.length) {
+      const raw = dateEl.text().trim();
+      expiresDate = raw.replace(/^Expires in\s*/i, '').replace(/^Expira em\s*/i, '').trim();
+    }
+
+    const name = nameEl.text().replace(/\s+/g, ' ').trim();
+    const issuer = issuerEl.text().replace(/\s+/g, ' ').trim();
+    const imageUrl = imgEl.attr('src') || '';
+    const fullCredentialUrl = credentialUrl.startsWith('http') ? credentialUrl : `https://www.credly.com${credentialUrl}`;
+
+    if (name && imageUrl) {
+      badges.push({
+        id: badgeId,
+        name,
+        issuer,
+        expiresDate,
+        imageUrl,
+        credentialUrl: fullCredentialUrl,
+        localImagePath: '',
+      });
+    }
+  });
+
+  console.log(`✅ Found ${badges.length} badges`);
+  console.log(`📁 Using selectors: data-testid="desktop-badge-card"`);
+
+  // Download images and adjust local path
+  for (const badge of badges) {
+    try {
+      const ext = path.extname(new URL(badge.imageUrl).pathname) || '.png';
+      const safeName = badge.name.replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-').toLowerCase().substring(0, 80);
+      const filename = `${safeName}${ext}`;
+      const dest = path.join(IMAGES_DIR, filename);
+
+      console.log(`  📥 Downloading: ${badge.name}`);
+      await downloadImage(badge.imageUrl, dest);
+      badge.localImagePath = `/src/data/credly/images/${filename}`;
+    } catch (err) {
+      console.error(`  ❌ Failed to download ${badge.name}:`, (err as Error).message);
+    }
+  }
+
+  // Save JSON
+  await fs.writeFile(JSON_FILE, JSON.stringify(badges, null, 2), 'utf-8');
+  console.log(`💾 Saved metadata to ${JSON_FILE}`);
+
+  return badges;
 }
 
 // CLI entrypoint
-if (import.meta.main) {
-  try {
-    const badges = await fetchCredlyBadges();
-    console.log(`✓ Successfully fetched ${badges.length} badges`);
-  } catch (error) {
-    console.error('Failed to fetch badges:', error);
-    process.exit(1);
-  }
+if (import.meta.url === `file://${process.argv[1]}`) {
+  fetchCredlyBadges()
+    .then((badges) => {
+      console.log(`\n🎉 Successfully processed ${badges.length} badges!`);
+      badges.forEach((b, i) => {
+        console.log(`\n${i + 1}. ${b.name}`);
+        console.log(`   Issuer: ${b.issuer}`);
+        console.log(`   Expires: ${b.expiresDate || 'N/A'}`);
+        console.log(`   Image: ${b.localImagePath}`);
+      });
+    })
+    .catch((err) => {
+      console.error('❌ Failed:', (err as Error).message);
+      process.exit(1);
+    });
 }

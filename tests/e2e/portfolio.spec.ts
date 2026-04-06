@@ -34,23 +34,41 @@ test.describe('Given I visit the portfolio page', () => {
     tags.forEach(tag => expect(tag.trim().length).toBeGreaterThan(0));
   });
 
-  test('When I scroll down Then I should see certifications', async ({ page }) => {
-    const certSection = page.locator('h2:has-text("Certificações")');
-    await expect(certSection).toBeVisible();
+  test('When I scroll down Then I should see badges section', async ({ page }) => {
+    const badgesSection = page.locator('h2:has-text("Certificações")');
+    await expect(badgesSection).toBeVisible();
 
-    const certCards = page.locator('.cert-card');
-    const count = await certCards.count();
+    const badgeCards = page.locator('.badge-card');
+    const count = await badgeCards.count();
     expect(count).toBeGreaterThanOrEqual(1);
-
-    // Verify first cert has name and issuer
-    const firstCert = certCards.first();
-    await expect(firstCert.locator('.cert-name')).toBeVisible();
-    await expect(firstCert.locator('.cert-issuer')).toBeVisible();
   });
 
-  test('When I view certifications Then Microsoft MVP should be listed', async ({ page }) => {
-    const names = await page.locator('.cert-name').allTextContents();
-    expect(names.some(n => n.includes('Microsoft MVP'))).toBe(true);
+  test('When I view badges Then each badge should have name, issuer, and badge image', async ({ page }) => {
+    const badgeNames = page.locator('.badge-name');
+    const badgeIssuers = page.locator('.badge-issuer');
+    const badgeImages = page.locator('.badge-image');
+
+    const namesCount = await badgeNames.count();
+    const issuersCount = await badgeIssuers.count();
+    const imagesCount = await badgeImages.count();
+
+    expect(namesCount).toBeGreaterThan(0);
+    expect(issuersCount).toBeGreaterThan(0);
+    expect(imagesCount).toBeGreaterThan(0);
+    expect(namesCount).toBe(imagesCount);
+    expect(issuersCount).toBe(imagesCount);
+
+    // Check first badge image has src
+    const firstImage = badgeImages.first();
+    const src = await firstImage.getAttribute('src');
+    expect(src).toBeTruthy();
+    expect(src!.startsWith('http')).toBe(true);
+  });
+
+  test('When I click a badge Then it should open the credential URL in new tab', async ({ page }) => {
+    const firstBadge = page.locator('.badge-card').first();
+    const href = await firstBadge.getAttribute('href');
+    expect(href).toContain('https://www.credly.com/badges/');
   });
 
   test('When I scroll further Then I should see education section', async ({ page }) => {

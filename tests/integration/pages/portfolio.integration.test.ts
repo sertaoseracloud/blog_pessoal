@@ -1,15 +1,15 @@
 import { describe, test, expect, beforeAll } from 'vitest';
 import { loadPageData, readPageScript, readFullPageContent } from '../../test-utils';
 import { loadData } from '../../../src/utils/data';
-import { validateProject, validateCertification } from '../../../src/utils/validation';
+import { validateProject } from '../../../src/utils/validation';
 
 describe('Given the portfolio page with real data', () => {
   let projects: any[];
-  let certifications: any[];
+  let badges: any[];
 
   beforeAll(async () => {
     projects = await loadData('projects.json', validateProject);
-    certifications = await loadData('certifications.json', validateCertification);
+    badges = await loadData('credly/badges.json');
   });
 
   describe('When data is loaded for the portfolio page', () => {
@@ -18,11 +18,20 @@ describe('Given the portfolio page with real data', () => {
       expect(projects.every(p => typeof p.title === 'string' && typeof p.description === 'string' && Array.isArray(p.tags))).toBe(true);
     });
 
-    test('Then certifications should be loaded with required fields', async () => {
-      expect(certifications.length).toBeGreaterThan(0);
-      certifications.forEach(c => {
-        expect(typeof c.name).toBe('string');
-        expect(typeof c.issuer).toBe('string');
+    test('Then badges should be loaded with required fields', async () => {
+      expect(badges.length).toBeGreaterThan(0);
+      badges.forEach(b => {
+        expect(typeof b.name).toBe('string');
+        expect(typeof b.issuer).toBe('string');
+        expect(typeof b.imageUrl).toBe('string');
+        expect(typeof b.credentialUrl).toBe('string');
+      });
+    });
+
+    test('Then each badge should have optional expiresDate and localImagePath', async () => {
+      badges.forEach(b => {
+        expect(b.expiresDate === undefined || typeof b.expiresDate === 'string').toBe(true);
+        expect(b.localImagePath === undefined || typeof b.localImagePath === 'string').toBe(true);
       });
     });
   });
@@ -42,9 +51,13 @@ describe('Given the portfolio page with real data', () => {
       });
     });
 
-    test('Then CertificationCard should receive compatible data', async () => {
-      expect(certifications.every(c => typeof c.name === 'string')).toBe(true);
-      expect(certifications.every(c => typeof c.issuer === 'string')).toBe(true);
+    test('Then BadgeCard should receive compatible data', async () => {
+      badges.forEach(b => {
+        expect(typeof b.name).toBe('string');
+        expect(typeof b.issuer).toBe('string');
+        expect(typeof b.imageUrl).toBe('string');
+        expect(typeof b.credentialUrl).toBe('string');
+      });
     });
   });
 
@@ -53,20 +66,20 @@ describe('Given the portfolio page with real data', () => {
       const script = await readPageScript('src/pages/portfolio.astro');
       expect(script).toContain("import BaseLayout");
       expect(script).toContain("import ProjectTimeline");
-      expect(script).toContain("import CertificationCard");
+      expect(script).toContain("import BadgeCard");
       expect(script).toContain("import { loadData }");
     });
 
-    test('Then it should load data with validators in the frontmatter', async () => {
+    test('Then it should load data (projects with validator, badges without)', async () => {
       const script = await readPageScript('src/pages/portfolio.astro');
       expect(script).toContain("loadData('projects.json', validateProject)");
-      expect(script).toContain("loadData('certifications.json', validateCertification)");
+      expect(script).toContain("loadData('credly/badges.json')");
     });
 
     test('Then it should pass data to components via props', async () => {
       const content = await readFullPageContent('src/pages/portfolio.astro');
       expect(content).toContain("<ProjectTimeline projects={");
-      expect(content).toContain("<CertificationCard certifications={");
+      expect(content).toContain("<BadgeCard badge={badge}");
     });
   });
 });

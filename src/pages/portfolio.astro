@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectTimeline from '../components/ProjectTimeline.astro';
-import CertificationCard from '../components/CertificationCard.astro';
+import BadgeCard from '../components/BadgeCard.astro';
 import { loadData } from '../utils/data';
 import { validateProject, validateCertification } from '../utils/validation';
 
 const projects = await loadData('projects.json', validateProject);
-const certifications = await loadData('certifications.json', validateCertification);
+const badges = await loadData('credly/badges.json');
 const publications = await loadData('publications.json', validateCertification);
 ---
 
@@ -19,7 +19,9 @@ const publications = await loadData('publications.json', validateCertification);
 
     <section class="container section">
       <h2 class="section-title">Certificações</h2>
-      <CertificationCard certifications={certifications} />
+      <div class="cert-grid">
+        {badges.map(badge => <BadgeCard badge={badge} />)}
+      </div>
     </section>
 
     <section class="container section">
@@ -71,4 +73,9 @@ const publications = await loadData('publications.json', validateCertification);
   }
   .edu-item h3 { margin-bottom: 0.3rem; }
   .edu-school { color: var(--text-secondary); }
-</style>
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
