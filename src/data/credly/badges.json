@@ -1,6 +1,15 @@
 [
   {
     "id": "0c6d9df3-bdc7-4671-ab8c-bd81692aba75",
+    "name": "AWS Certified Machine Learning Engineer – Associate",
+    "issuer": "Amazon Web Services Training and Certification",
+    "expiresDate": "Expira em 6 de abr. de 2029",
+    "imageUrl": "https://images.credly.com/size/340x340/images/1a634b4e-3d6b-4a74-b118-c0dcb429e8d2/image.png",
+    "credentialUrl": "https://www.credly.com/earner/earned/badge/945781d7-34b3-4b7c-8a34-4e82c86ff24c",
+    "localImagePath": "/src/data/credly/images/aws-certified-machine-learning-engineer-associate.png"
+  },
+  {
+    "id": "0c6d9df3-bdc7-4671-ab8c-bd81692aba75",
     "name": "AWS Certified Solutions Architect – Associate",
     "issuer": "Amazon Web Services Training and Certification",
     "expiresDate": "Expira em 1 de abr. de 2029",
