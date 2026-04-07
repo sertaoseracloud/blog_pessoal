@@ -29,7 +29,7 @@
   {
     "id": "b611d653-5c10-46b6-bb6f-8b8b18d8e2a7",
     "name": "2025 Microsoft Most Valuable Professional (MVP)",
-    "issuer": "Microsoft Most Valuable Professionals Program",
+    "issuer": "Microsoft",
     "expiresDate": "",
     "imageUrl": "https://images.credly.com/images/00e5354b-b9fc-4bef-8732-59b419a7c16b/blob",
     "credentialUrl": "https://www.credly.com/badges/b611d653-5c10-46b6-bb6f-8b8b18d8e2a7",
@@ -74,7 +74,7 @@
   {
     "id": "522396c2-5581-4fb6-9b61-3c97643c4d6f",
     "name": "Developer Technologies MVP 2023",
-    "issuer": "Microsoft Student Ambassadors Communities",
+    "issuer": "Microsoft",
     "expiresDate": "",
     "imageUrl": "https://images.credly.com/images/44af94a1-8733-4e49-be8c-47ffcd969aa4/image.png",
     "credentialUrl": "https://www.credly.com/badges/522396c2-5581-4fb6-9b61-3c97643c4d6f",
@@ -189,24 +189,6 @@
     "localImagePath": "/src/data/credly/images/microsoft-certified-azure-fundamentals.png"
   },
   {
-    "id": "fed60a18-3312-499e-bff6-02318f361225",
-    "name": "AWS Certified Developer – Associate",
-    "issuer": "Amazon Web Services Training and Certification",
-    "expiresDate": "Expirada em 17 de set. de 2024",
-    "imageUrl": "https://images.credly.com/images/b9feab85-1a43-4f6c-99a5-631b88d5461b/image.png",
-    "credentialUrl": "https://www.credly.com/badges/fed60a18-3312-499e-bff6-02318f361225",
-    "localImagePath": "/src/data/credly/images/aws-certified-developer-associate.png"
-  },
-  {
-    "id": "9a0fbf37-ba7f-4e67-bdda-41f652f55637",
-    "name": "AWS Certified Cloud Practitioner",
-    "issuer": "Amazon Web Services Training and Certification",
-    "expiresDate": "Expirada em 17 de set. de 2024",
-    "imageUrl": "https://images.credly.com/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png",
-    "credentialUrl": "https://www.credly.com/badges/9a0fbf37-ba7f-4e67-bdda-41f652f55637",
-    "localImagePath": "/src/data/credly/images/aws-certified-cloud-practitioner.png"
-  },
-  {
     "id": "0de4dbc0-442b-4d26-a624-712f7f6881b4",
     "name": "Microsoft Certified: DevOps Engineer Expert",
     "issuer": "Microsoft",
@@ -259,32 +241,5 @@
     "imageUrl": "https://images.credly.com/images/ea009208-e2d6-432e-bbf6-d34d28b0835f/azure-virtual-desktop-specialty-600x600.png",
     "credentialUrl": "https://www.credly.com/badges/90cbc622-f441-4e10-b8da-9d3614cb8b27",
     "localImagePath": "/src/data/credly/images/microsoft-certified-azure-virtual-desktop-specialty.png"
-  },
-  {
-    "id": "444d6b21-2301-47b5-a8ed-537d690ecc77",
-    "name": "Scrum Foundation Professional Certification - SFPC™ !",
-    "issuer": "Certiprof",
-    "expiresDate": "Expirada em 5 de mai. de 2023",
-    "imageUrl": "https://images.credly.com/images/4e3d6f9f-55d7-4ea7-b0e6-f4d4ff543e22/image.png",
-    "credentialUrl": "https://www.credly.com/badges/444d6b21-2301-47b5-a8ed-537d690ecc77",
-    "localImagePath": "/src/data/credly/images/scrum-foundation-professional-certification---sfpc-.png"
-  },
-  {
-    "id": "f3431787-b89e-4de5-a240-dcc027f9c212",
-    "name": "Microsoft Certified: Identity and Access Administrator Associate",
-    "issuer": "Microsoft",
-    "expiresDate": "Expirada em 29 de jan. de 2023",
-    "imageUrl": "https://images.credly.com/images/91295436-0704-4b98-8e1a-ef5f937bda21/identity-and-access-administrator-associate-600x600.png",
-    "credentialUrl": "https://www.credly.com/badges/f3431787-b89e-4de5-a240-dcc027f9c212",
-    "localImagePath": "/src/data/credly/images/microsoft-certified-identity-and-access-administrator-associate.png"
-  },
-  {
-    "id": "d7c45f03-473d-4113-a09d-1c7a884863ac",
-    "name": "Microsoft Certified: Azure AI Engineer Associate",
-    "issuer": "Microsoft",
-    "expiresDate": "Expirada em 26 de nov. de 2022",
-    "imageUrl": "https://images.credly.com/images/61f56aa4-16fd-403c-90bc-1d90dba1fa99/image.png",
-    "credentialUrl": "https://www.credly.com/badges/d7c45f03-473d-4113-a09d-1c7a884863ac",
-    "localImagePath": "/src/data/credly/images/microsoft-certified-azure-ai-engineer-associate.png"
   }
 ]
