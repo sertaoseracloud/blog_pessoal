@@ -40,7 +40,8 @@
       "Read(//tmp/**)",
       "Bash(NODE_OPTIONS=\"--loader ts-node/esm\" node scripts/fetch-credly-badges.ts)",
       "Bash('[data-testid=\\\\\"desktop-badge-card\\\\\"]')",
-      "Bash(card)"
+      "Bash(card)",
+      "Bash(npx paperclipai:*)"
     ]
   }
 }
